@@ -1,0 +1,16 @@
+	<!--ici pour lr ngClass je vais comparer directement les 2 methode nombreOui et nombreNon cela m'evite de cree une autre variable-->
+	<li [ngClass]="{'list-group-item': true,
+				'list-group-item-success': nombreOui() > nombreNon(),
+				'list-group-item-danger' : nombreOui() < nombreNon()}">
+		<strong><span class="tittre">{{titlePost}} : </span></strong>
+		{{ created_at | date : 'short' }}<br/>
+		{{content}}<br/>
+		<!--ici je cree un evenement qui va augementer le nombre de "oui" a chaque clique"-->
+		<button class="btn btn-success" (click) = "nombreOui()">
+		love it
+		</button>
+		<!--ici je cree un evenement qui va augementer le nombre de "Non" a chaque clique"-->
+		<button class="btn btn-danger" (click) ="nombreNon()">
+		don't love it
+		</button> 
+	</li>
