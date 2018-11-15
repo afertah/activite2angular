@@ -1,23 +1,26 @@
-import { Component, OnInit,Input} from '@angular/core';
-
+import { Component, OnInit,Input, OnDestroy} from '@angular/core';
+import { PostsService } from '../services/posts.service';
+import {Subscription} from 'rxjs';
+import { Observable } from 'rxjs';
+import { Post } from '../models/Post.model';
 @Component({
   selector: 'app-post-list-component',
   templateUrl: './post-list-component.component.html',
   styleUrls: ['./post-list-component.component.css']
 })
-export class PostListComponentComponent implements OnInit {
-  constructor() { }
-oui = 0;
-non = 0;
-@Input() titlePost: string;
-@Input() created_at;
-@Input() content: string;
+export class PostListComponentComponent implements OnInit, OnDestroy {
+	posts:Post[];
+	postsSubscription: Subscription;
+  constructor(private postsService: PostsService) { }
   ngOnInit() {
+    this.postsSubscription = this.postsService.postsSubject.subscribe(
+      (posts: Post[]) => {
+        this.posts = posts;
+      }
+    );
+    this.postsService.emitPostsSubject();
   }
-nombreOui(){
-return(this.oui++);
-}
-nombreNon(){
-return(this.non++);
-}
-}
+	ngOnDestroy() {
+		this.postsSubscription.unsubscribe();
+	}
+ }
